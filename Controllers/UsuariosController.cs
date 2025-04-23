@@ -81,7 +81,7 @@ public class UsuarioController : ControllerBase
         _context.Usuarios.Remove(usuario);
         _context.SaveChanges();
 
-        return Ok(new { mensagem = "Usuário deletado com sucesso!" });
+        return Ok(new { mensagem = "Usuário deletado com sucesso !" });
     }
 
     [HttpPost("login")]
