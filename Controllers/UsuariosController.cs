@@ -76,7 +76,7 @@ public class UsuarioController : ControllerBase
     {
         var usuario = _context.Usuarios.Find(id);
         if (usuario == null)
-            return NotFound(new { mensagem = "Usuário não encontrado." });
+            return NotFound(new { mensagem = "Usuário não encontrado " });
 
         _context.Usuarios.Remove(usuario);
         _context.SaveChanges();
