@@ -33,6 +33,17 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", policy =>
+    {
+        // Permite que qualquer origem faça requisições ao seu backend
+        policy.WithOrigins("http://localhost:3000")  // Certifique-se de substituir pela URL do seu frontend
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -44,11 +55,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
+// Chama o UseCors antes de Authentication e Authorization para garantir que o CORS seja aplicado corretamente
+app.UseCors("CorsPolicy");
 
-app.UseAuthorization();
+app.UseAuthentication();  // Autenticação
+app.UseAuthorization();   // Autorização
 
 app.MapControllers();
 
 app.Run();
-
