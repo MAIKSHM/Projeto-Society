@@ -85,15 +85,21 @@ public class UsuarioController : ControllerBase
     }
 
     [HttpPost("login")]
-    public IActionResult Login([FromBody] LoginDto login, [FromServices] IConfiguration configuration)
+    public IActionResult Login([FromBody] LoginDto login)
     {
-        var usuario = _context.Usuarios.FirstOrDefault(u => u.Email == login.Email && u.Senha == login.Senha);
+        var usuario = _context.Usuarios
+            .FirstOrDefault(u => u.Email == login.Email && u.Senha == login.Senha);
 
         if (usuario == null)
             return Unauthorized("Usuário ou senha inválidos.");
 
-        var token = TokenService.GenerateToken(usuario, configuration);
-        return Ok(new { token });
+        // Retorna o usuário (sem token) para o front-end
+        return Ok(new { 
+            Id = usuario.Id,
+            Nome = usuario.Nome,
+            Email = usuario.Email
+            // Adicione outros campos se necessário
+        });
     }
 
     public class LoginDto
